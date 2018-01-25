@@ -6,6 +6,8 @@ of Composite Structures" by Kassapoglou.
 module LaminateLayup
 export stiffness,compliance,plystrain,plystress
 
+include("failuretheories.jl")
+
 """
     stiffness(e1,e2,g12,anu12,n_lamina,n_plies,t_lam,tht_lam,mat_lam)
 
@@ -233,11 +235,11 @@ end
 
 Rotates stress theta degrees
 """
-function rotstress(theta,sigmax,sigmay,tauxy)
+function rotstress(stress,theta)
   ct = cosd(theta)
   st = sind(theta)
   T = [ct^2.0 st^2.0 2.0*st*ct; st^2.0 ct^2.0 -2.0*st*ct; -st*ct st*ct ct^2.0-st^2.0]
-  return T*[sigmax,sigmay,tauxy]
+  return T*stress
 end
 
 """

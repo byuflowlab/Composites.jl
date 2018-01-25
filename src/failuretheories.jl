@@ -20,13 +20,25 @@ arranged as follows:
 5. Positive shear
 6. Negative shear
 """
-function maxstress(sigma1,sigma2,tau12,sigma1tu,sigma1cu,sigma2tu,sigma2cu,tau12u)
-  return = [sigma1[i]/sigma1tu,
-           -sigma1[i]/sigma1cu,
-            sigma2[i]/sigma2tu,
-           -sigma2[i]/sigma2cu,
-            tau12[i]/tau12u,
-           -tau12[i]/tau12u];
+function maxstress(sigma1::Float64,sigma2::Float64,tau12::Float64,sigma1tu::Float64,
+  sigma1cu::Float64,sigma2tu::Float64,sigma2cu::Float64,tau12u::Float64)
+  return [sigma1/sigma1tu,
+         -sigma1/sigma1cu,
+          sigma2/sigma2tu,
+         -sigma2/sigma2cu,
+          tau12/tau12u,
+         -tau12/tau12u]
+end
+
+function maxstress(sigma1::Array{Float64,1},sigma2::Array{Float64,1},
+  tau12::Array{Float64,1},sigma1tu::Float64,sigma1cu::Float64,sigma2tu::Float64,
+  sigma2cu::Float64,tau12u::Float64)
+  return hcat(sigma1/sigma1tu,
+         -sigma1/sigma1cu,
+          sigma2/sigma2tu,
+         -sigma2/sigma2cu,
+          tau12/tau12u,
+         -tau12/tau12u)
 end
 
 """
@@ -43,13 +55,25 @@ correspond to ply failure.
 - `sigma2cu`: Ply transverse ultimate strength in compression
 - `tau12u`: Ply ultimate in plane shear strength
 """
-function tsaiwu(sigma1,sigma2,tau12,sigma1tu,sigma1cu,sigma2tu,sigma2cu,tau12u)
-  return (sigma1[i]^2.0/(sigma1tu*sigma1cu))+
-         (sigma2[i].^2.0/(sigma2tu*sigma2cu))-
-         sqrt(1.0/(sigma1tu*sigma1cu)*1.0/(sigma2tu*sigma2cu))*sigma1[i]*sigma2[i]+
-         (1.0/sigma1tu-1.0/sigma1cu)*sigma1[i]+
-         (1.0/sigma2tu-1.0/sigma2cu)*sigma2[i]+
-         tau12[i]^2.0/tau12u^2.0
+function tsaiwu(sigma1::Float64,sigma2::Float64,tau12::Float64,sigma1tu::Float64,
+  sigma1cu::Float64,sigma2tu::Float64,sigma2cu::Float64,tau12u::Float64)
+  return (sigma1^2.0/(sigma1tu*sigma1cu))+
+         (sigma2^2.0/(sigma2tu*sigma2cu))-
+         sqrt(1.0/(sigma1tu*sigma1cu)*1.0/(sigma2tu*sigma2cu))*sigma1*sigma2+
+         (1.0/sigma1tu-1.0/sigma1cu)*sigma1+
+         (1.0/sigma2tu-1.0/sigma2cu)*sigma2+
+         tau12^2.0/tau12u^2.0
+end
+
+function tsaiwu(sigma1::Array{Float64,1},sigma2::Array{Float64,1},
+  tau12::Array{Float64,1},sigma1tu::Float64,sigma1cu::Float64,sigma2tu::Float64,
+  sigma2cu::Float64,tau12u::Float64)
+  return (sigma1.^2.0./(sigma1tu*sigma1cu))+
+         (sigma2.^2.0./(sigma2tu*sigma2cu))-
+         sqrt(1.0/(sigma1tu*sigma1cu)*1.0/(sigma2tu*sigma2cu)).*sigma1.*sigma2+
+         (1.0/sigma1tu-1.0/sigma1cu).*sigma1+
+         (1.0/sigma2tu-1.0/sigma2cu).*sigma2+
+         tau12.^2.0/tau12u^2.0
 end
 
 """
@@ -72,9 +96,19 @@ arranged as follows:
 3. Matrix failure in tension
 4. Matrix failure in compression
 """
-function hashinrotem(sigma1,sigma2,tau12,sigma1tu,sigma1cu,sigma2tu,sigma2cu,tau12u)
+function hashinrotem(sigma1::Float64,sigma2::Float64,tau12::Float64,sigma1tu::Float64,
+  sigma1cu::Float64,sigma2tu::Float64,sigma2cu::Float64,tau12u::Float64)
   return [sigma1/sigma1tu,
          -sigma1/sigma1cu,
           sign(sigma2)*(sigma2^2.0/sigma2tu^2.0+tau12^2.0/tau12u^2.0),
           sign(sigma2)*-(sigma2^2.0/sigma2cu^2.0+tau12^2.0/tau12u^2.0)]
+end
+
+function hashinrotem(sigma1::Array{Float64,1},sigma2::Array{Float64,1},
+  tau12::Array{Float64,1},sigma1tu::Float64,sigma1cu::Float64,sigma2tu::Float64,
+  sigma2cu::Float64,tau12u::Float64)
+  return hcat(sigma1./sigma1tu,
+         -sigma1./sigma1cu,
+          sign(sigma2)*(sigma2.^2.0/sigma2tu^2.0+tau12.^2.0./tau12u^2.0),
+          sign(sigma2)*-(sigma2.^2.0/sigma2cu^2.0+tau12.^2.0./tau12u^2.0))
 end
