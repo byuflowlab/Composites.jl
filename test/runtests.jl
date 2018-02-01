@@ -1,5 +1,3 @@
-using LaminateLayup
+import LaminateLayup
 using Base.Test
-
-# write your own tests here
-@test 1 == 2
+include("abd.jl")

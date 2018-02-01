@@ -6,115 +6,8 @@ of Composite Structures" by Kassapoglou.
 module LaminateLayup
 export stiffness,compliance,plystrain,plystress
 
+include("abd.jl")
 include("failuretheories.jl")
-
-"""
-    stiffness(e1,e2,g12,anu12,n_lamina,n_plies,t_lam,tht_lam,mat_lam)
-
-Returns stiffness matrix for a layup using classical laminated plate theory.
-
-# Arguments:
-Material Properties
-* `e1::Array{Float64,1}`: E1
-* `e2::Array{Float64,1}`: E2
-* `g12::Array{Float64,1}`: G12
-* `anu12::Array{Float64,1}`: Nu12
-Layup Properties
-* `n_lamina`: number of lamina
-* `n_plies::Array{Int64,1}`: number of plies for each lamina
-* `t_lam::Array{Float64,1}`: thickness of a ply (m) for the lamina
-* `tht_lam::Array{Float64,1}`: orientation (deg) for each lamina
-* `mat_lamU::Array{Int64,1}`: material id for each lamina
-"""
-function stiffness(e1,e2,g12,anu12,n_lamina,n_plies,t_lam,tht_lam,mat_lam)
-
-  # Implicitly assigned inputs
-  if !(length(e1) == length(e2) == length(g12) == length(anu12))
-    error("lengths of specified material properties do not match")
-  end
-  n_materials = length(e1)
-
-  if !(length(n_plies) == length(mat_lam) == length(t_lam) == length(tht_lam))
-    error("lengths of lamina properties do not match")
-  end
-
-  # material properties
-  anud = 1.0 - anu12.*anu12.*e2./e1
-  q11 = e1 ./ anud
-  q22 = e2 ./ anud
-  q12 = anu12.*e2 ./ anud
-  q66 = g12
-
-  # Get z-values
-  t_lam = t_lam.*n_plies
-  z0 = sum(t_lam)./2.0
-  z = zeros(n_lamina+1)
-  for k = 1:n_lamina
-    z[k+1] = sum(t_lam[1:k])
-  end
-  z = z-z0
-
-  # Loop through layers
-  A = zeros(3,3)
-  B = zeros(3,3)
-  D = zeros(3,3)
-  for k = 1:n_lamina
-    # Rotate material stiffness properties by specifed angle
-    theta = tht_lam[k]
-    qxx = q11[mat_lam[k]]
-    qyy = q22[mat_lam[k]]
-    qxy = q12[mat_lam[k]]
-    qss = q66[mat_lam[k]]
-    qt = rotmatprop(theta,qxx,qyy,qxy,qss)
-
-    # Find lumped stiffness properties for the laminate
-    for i = 1:3
-      for j = 1:3
-        A[i,j] = A[i,j]+qt[i,j]*(z[k+1]-z[k])
-        B[i,j] = B[i,j]+qt[i,j]/2.0*(z[k+1]^2.0-z[k]^2.0)
-        D[i,j] = D[i,j]+qt[i,j]/3.0*(z[k+1]^3.0-z[k]^3.0)
-      end
-    end
-  end
-
-  # Assemble and return stiffness matrix
-  S = [A B; B' D]
-  return S
-end #stiffness
-
-"""
-    compliance(e1,e2,g12,anu12,n_lamina,n_plies,t_lam,tht_lam,mat_lam)
-
-Returns compliance matrix for a layup using classical laminated plate theory.
-
-# Arguments:
-Material Properties
-* `e1::Array{Float64,1}`: E1
-* `e2::Array{Float64,1}`: E2
-* `g12::Array{Float64,1}`: G12
-* `anu12::Array{Float64,1}`: Nu12
-Layup Properties
-* `n_lamina`: number of lamina
-* `n_plies::Array{Int64,1}`: number of plies for each lamina
-* `t_lam::Array{Float64,1}`: thickness of a ply (m) for the lamina
-* `tht_lam::Array{Float64,1}`: orientation (deg) for each lamina
-* `mat_lamU::Array{Int64,1}`: material id for each lamina
-
-"""
-function compliance(e1::Array{Float64,1}, e2::Array{Float64,1},
-  g12::Array{Float64,1}, anu12::Array{Float64,1},
-  n_lamina::Int64,n_plies::Array{Int64,1}, t_lam::Array{Float64,1},
-  tht_lam::Array{Float64,1}, mat_lam::Array{Int64,1})
-
-  S = stiffness(e1,e2,g12,anu12,n_lamina,n_plies,t_lam,tht_lam,mat_lam)
-  A = S[1:3,1:3]
-  invA = inv(A)
-  delta = (D-B*invA*B)^-1
-  beta = -A*B*delta
-  alfa = invA+invA*B*delta*B*invA
-  C = [alfa,beta,beta',delta]
-  return C
-end # compliance
 
 """
     plystrain(S,Nx,Ny,Nxy,Mx,My,Mxy,n_lamina,n_plies,t_lam,tht_lam)
@@ -209,26 +102,7 @@ function plystress(S,Nx,Ny,Nxy,Mx,My,Mxy,e1::Array{Float64,1}, e2::Array{Float64
   return sigma1U,sigma1L,sigma2U,sigma2L,tau12U,tau12L
 end
 
-"""
-    rotmatprop(theta,qxx,qyy,qxy,qss)
 
-Rotates material stiffness matrix theta degrees
-"""
-function rotmatprop(theta,qxx,qyy,qxy,qss)
-  m = cosd(theta)
-  n = sind(theta)
-  qt = zeros(3,3)
-  qt[1,1] = m^4.0*qxx + n^4.0*qyy + 2.0*m^2.0*n^2.0*qxy + 4.0*m^2.0*n^2.0*qss
-  qt[1,2] = m^2.0*n^2.0*qxx + m^2.0*n^2.0*qyy+(m^4.0+n^4.0)*qxy - m^2.0*n^2.0*qss
-  qt[1,3] = m^3.0*n*qxx - m*n^3.0*qyy + (m*n^3.0-m^3.0*n)*qxy + 2.0*(m*n^3.0-m^3.0*n)*qss
-  qt[2,1] = qt[1,2]
-  qt[2,2] = n^4.0*qxx + m^4.0*qyy + 2.0*m^2.0*n^2.0*qxy + 4.0*m^2.0*n^2.0*qss
-  qt[2,3] = m*n^3.0*qxx - m^3.0*n*qyy + (m^3.0*n-m*n^3.0)*qxy + 2.0*(m^3.0*n-m*n^3.0)*qss
-  qt[3,1] = qt[1,3]
-  qt[3,2] = qt[2,3]
-  qt[3,3] = m^2.0*n^2.0*qxx + m^2.0*n^2.0*qyy-2.0*m^2.0*n^2.0*qxy + (m^2.0-n^2.0)^2.0*qss
-  return qt
-end
 
 """
     rotstress(theta,sigmax,sigmay,tauxy)
