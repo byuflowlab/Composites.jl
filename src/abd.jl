@@ -60,6 +60,18 @@ function rotQ(q::Array{Float64,2},theta::Float64)
 end
 
 """
+    getz(tply::Array{Float64,1},nply::Array{Int64,1})
+Returns a laminate's z-coordinates (coordinates of top and bottom of laminas)
+given the thickness of plies in each lamina and the number of plies in each
+lamina.
+"""
+function getz(tply::Array{Float64,1},nply::Array{Int64,1})
+  # Get z-values
+  tlam = tply.*nply
+  return unshift!(cumsum(tlam),0.0)-sum(tlam)/2.0
+end
+
+"""
     getABD(nply::Array{Int64,1},tply::Array{Float64,1},matlam::Array{Int64,1},
     thetalam::Array{Float64,1},e1::Array{Float64,1},e2::Array{Float64,1},
     g12::Array{Float64,1},nu12::Array{Float64,1})
@@ -80,14 +92,7 @@ function getABD(nply::Array{Int64,1},tply::Array{Float64,1},matlam::Array{Int64,
 
   nlam = length(nply)
 
-  # Get z-values
-  tply = tply.*nply
-  z0 = sum(tply)./2.0
-  z = zeros(nlam+1)
-  for k = 1:nlam
-    z[k+1] = sum(tply[1:k])
-  end
-  z = z-z0
+  z = getz(tply,nply)
 
   # Get Q matrices
   q = getQ(e1,e2,g12,nu12)
