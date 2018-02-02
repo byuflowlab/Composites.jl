@@ -66,4 +66,4 @@ function getplystress(plystrain::Array{Float64,2},q::Array{Float64,3},matid::Arr
   end
   return plystress
 end
-getplystress(plystrain::Array{Float64,2},q::Array{Float64,3},lam::laminate) = getplystress(plystrain,q,matid)
+getplystress(plystrain::Array{Float64,2},q::Array{Float64,3},lam::laminate) = getplystress(plystrain,q,lam.matid)
