@@ -1,7 +1,7 @@
-# LaminateLayup
+# Composites
 
-[![Build Status](https://travis-ci.org/taylormcd/LaminateLayup.jl.svg?branch=master)](https://travis-ci.org/taylormcd/LaminateLayup.jl)
+[![Build Status](https://travis-ci.org/taylormcd/Composites.jl.svg?branch=master)](https://travis-ci.org/taylormcd/Composites.jl)
 
-[![Coverage Status](https://coveralls.io/repos/taylormcd/LaminateLayup.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/taylormcd/LaminateLayup.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/taylormcd/Composites.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/taylormcd/Composites.jl?branch=master)
 
-[![codecov.io](http://codecov.io/github/taylormcd/LaminateLayup.jl/coverage.svg?branch=master)](http://codecov.io/github/taylormcd/LaminateLayup.jl?branch=master)
+[![codecov.io](http://codecov.io/github/taylormcd/Composites.jl/coverage.svg?branch=master)](http://codecov.io/github/taylormcd/Composites.jl?branch=master)

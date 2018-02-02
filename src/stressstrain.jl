@@ -23,10 +23,11 @@ end
 """
     plystrain(tply::Array{Float64,1},nply::Array{Int64,1},theta::Array{Float64,1},
     resultantstresses::Array{Float64,1},A::Array{Float64,2},B::Array{Float64,2},D::Array{Float64,2})
+    getplystrain(lam::laminate,resultantstrain::Array{Float64,1})
 Calculates material strains in each ply aligned with principal material direction
 """
-function getplystrain(tply::Array{Float64,1},nply::Array{Int64,1},theta::Array{Float64,1},
-  resultantstress::Array{Float64,1},A::Array{Float64,2},B::Array{Float64,2},D::Array{Float64,2})
+function getplystrain(nply::Array{Int64,1},tply::Array{Float64,1},theta::Array{Float64,1},
+  resultantstrain::Array{Float64,1})
 
   # number of laminas
   nlam = length(nply)
@@ -34,18 +35,10 @@ function getplystrain(tply::Array{Float64,1},nply::Array{Int64,1},theta::Array{F
   # coordinates of top and bottom of plies
   z = getz(tply,nply)
 
-  # stiffness matrix
-  S = vcat(hcat(A,B),hcat(B',D))
-
-  # resultant strains from resultant stresses
-  resultantstrain = S\resultantstress
-
   # local strains at top and bottom of each lamina
   localstrain = zeros(Float64,3,nlam+1)
-  for i = 1:3
-    for k = 1:nlam+1
-      localstrain[i,k] = resultantstrain[i]+z[k]*resultantstrain[3+i]
-    end
+  for k = 1:nlam+1
+    localstrain[:,k] = resultantstrain[1:3]+z[k]*resultantstrain[4:6]
   end
 
   # rotate to align with material principal axes
@@ -58,15 +51,19 @@ function getplystrain(tply::Array{Float64,1},nply::Array{Int64,1},theta::Array{F
 
   return lowerplystrain,upperplystrain
 end
+getplystrain(lam::laminate,resultantstrain::Array{Float64,1}) = getplystrain(
+  lam.nply,lam.tply,lam.theta,resultantstrain)
 
 """
-    function getplystress(plystrain::Array{Float64,2},q::Array{Float64,3})
+    getplystress(plystrain::Array{Float64,2},q::Array{Float64,3})
+    getplystress(plystrain::Array{Float64,2},q,lam::laminate)
 Calculates ply stresses from ply strains and material stiffness matrix
 """
-function getplystress(plystrain::Array{Float64,2},q::Array{Float64,3})
-  plystress = zeros(Float64,size(plystrain)...)
-  for i = 1:size(q,3)
-    plystress = q[:,:,i]*plystrain[:,i]
+function getplystress(plystrain::Array{Float64,2},q::Array{Float64,3},matid::Array{Int64,1})
+  plystress = zeros(Float64,3,size(plystrain,2))
+  for i = 1:length(matid)
+    plystress[:,i] = q[:,:,matid[i]]*plystrain[:,i]
   end
   return plystress
 end
+getplystress(plystrain::Array{Float64,2},q::Array{Float64,3},lam::laminate) = getplystress(plystrain,q,matid)

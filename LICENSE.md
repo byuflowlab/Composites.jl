@@ -1,4 +1,4 @@
-The LaminateLayup.jl package is licensed under the MIT "Expat" License:
+The Composites.jl package is licensed under the MIT "Expat" License:
 
 > Copyright (c) 2018: Taylor McDonnell.
 >

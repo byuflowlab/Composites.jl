@@ -1,3 +1,4 @@
-import LaminateLayup
+import Composites
 using Base.Test
-include("abd.jl")
+include("textbookabd.jl")
+include("abdstressstrain.jl")
