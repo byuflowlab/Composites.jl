@@ -14,5 +14,9 @@ include("abd.jl")
 include("stressstrain.jl")
 # Material Failure Theories
 include("failuretheories.jl")
+# Buckling related functions
+include("buckling.jl")
+# Additional methods for calling material failure theories
+include("failuremethods.jl")
 
 end #module
