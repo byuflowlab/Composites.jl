@@ -1,20 +1,20 @@
-struct material
-  e1::Float64 #E1
-  e2::Float64 #E2
-  g12::Float64 #G12
-  nu12::Float64 #nu12
-  rho::Float64 #density
-  xt::Float64 #longitudinal tensile ultimate strength (Pa)
-  xc::Float64 #longitudinal compressive ultimate strength (Pa)
-  yt::Float64 #transverse tensile ultimate strength (Pa)
-  yc::Float64 #transverse compressive ultimate strength (Pa)
-  s::Float64 #shear ultimate strength (Pa)
+struct material{T<:Real}
+  e1::T #E1
+  e2::T #E2
+  g12::T #G12
+  nu12::T #nu12
+  rho::T #density
+  xt::T #longitudinal tensile ultimate strength (Pa)
+  xc::T #longitudinal compressive ultimate strength (Pa)
+  yt::T #transverse tensile ultimate strength (Pa)
+  yc::T #transverse compressive ultimate strength (Pa)
+  s::T #shear ultimate strength (Pa)
 end
 
-function material(e1::Array{Float64,1},e2::Array{Float64,1},g12::Array{Float64,1},
-  nu12::Array{Float64,1},rho::Array{Float64,1},xt::Array{Float64,1},
-  xc::Array{Float64,1},yt::Array{Float64,1},yc::Array{Float64,1},
-  s::Array{Float64,1})
+function material(e1::Array{Real,1},e2::Array{Real,1},g12::Array{Real,1},
+  nu12::Array{Real,1},rho::Array{Real,1},xt::Array{Real,1},
+  xc::Array{Real,1},yt::Array{Real,1},yc::Array{Real,1},
+  s::Array{Real,1})
 
   nmat = length(e1)
   matprops = Array{material,1}(nmat)
@@ -28,9 +28,9 @@ end
 struct laminate
   matid::Array{Int64,1}
   nply::Array{Int64,1}
-  tply::Array{Float64,1}
-  theta::Array{Float64,1}
-  function laminate(matid::Array{Int64,1},nply::Array{Int64,1},tply::Array{Float64,1},theta::Array{Float64,1})
+  tply::Array{Real,1}
+  theta::Array{Real,1}
+  function laminate(matid::Array{Int64,1},nply::Array{Int64,1},tply::Array{Real,1},theta::Array{Real,1})
     if !(length(matid) == length(nply) == length(tply) == length(theta))
       error("All arrays must have same length")
     end
