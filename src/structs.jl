@@ -30,7 +30,8 @@ struct laminate{I<:Integer,R<:Real}
   nply::Array{I,1}
   tply::Array{R,1}
   theta::Array{R,1}
-  function laminate{I<:Integer,R<:Real}(matid::Array{<:Integer,1},nply::Array{<:Integer,1},tply::Array{<:Real,1},theta::Array{<:Real,1})
+  function laminate{I,R}(matid::Array{<:Integer,1},nply::Array{<:Integer,1},
+    tply::Array{<:Real,1},theta::Array{<:Real,1}) where {I<:Integer,R<:Real}
     if !(length(matid) == length(nply) == length(tply) == length(theta))
       error("All arrays must have same length")
     end
