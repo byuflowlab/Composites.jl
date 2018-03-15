@@ -16,7 +16,7 @@ function localbuckling(A::Array{<:Real,2},D::Array{<:Real,2},b::Real)
   return bucklingload,bucklingstrain
 end #buckling
 
-function localbuckling(A::Array{Array{<:Real,2},1},D::Array{Array{<:Real,2},1},b::Array{<:Real,1})
+function localbuckling(A::AbstractArray{<:AbstractArray{<:Real,2},1},D::AbstractArray{<:AbstractArray{<:Real,2},1},b::Array{<:Real,1})
   bucklingload = zeros(Real,length(A))
   bucklingstrain = zeros(Real,length(A))
   for i = 1:length(A)
