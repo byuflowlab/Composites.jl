@@ -1,20 +1,20 @@
-struct material
-  e1::T where T<:Real #E1
-  e2::T where T<:Real #E2
-  g12::T where T<:Real #G12
-  nu12::T where T<:Real #nu12
-  rho::T where T<:Real #density
-  xt::T where T<:Real #longitudinal tensile ultimate strength (Pa)
-  xc::T where T<:Real #longitudinal compressive ultimate strength (Pa)
-  yt::T where T<:Real #transverse tensile ultimate strength (Pa)
-  yc::T where T<:Real #transverse compressive ultimate strength (Pa)
-  s::T where T<:Real #shear ultimate strength (Pa)
+struct material{R<:Real}
+  e1::R #E1
+  e2::R #E2
+  g12::R #G12
+  nu12::R #nu12
+  rho::R #density
+  xt::R #longitudinal tensile ultimate strength (Pa)
+  xc::R #longitudinal compressive ultimate strength (Pa)
+  yt::R #transverse tensile ultimate strength (Pa)
+  yc::R #transverse compressive ultimate strength (Pa)
+  s::R #shear ultimate strength (Pa)
 end
 
-function material(e1::Array{Real,1},e2::Array{Real,1},g12::Array{Real,1},
-  nu12::Array{Real,1},rho::Array{Real,1},xt::Array{Real,1},
-  xc::Array{Real,1},yt::Array{Real,1},yc::Array{Real,1},
-  s::Array{Real,1})
+function material(e1::Array{<:Real,1},e2::Array{<:Real,1},g12::Array{<:Real,1},
+  nu12::Array{<:Real,1},rho::Array{<:Real,1},xt::Array{<:Real,1},
+  xc::Array{<:Real,1},yt::Array{<:Real,1},yc::Array{<:Real,1},
+  s::Array{<:Real,1})
 
   nmat = length(e1)
   matprops = Array{material,1}(nmat)
@@ -25,12 +25,12 @@ function material(e1::Array{Real,1},e2::Array{Real,1},g12::Array{Real,1},
   return matprops
 end
 
-struct laminate
-  matid::Array{Int64,1}
-  nply::Array{Int64,1}
-  tply::Array{T,1} where T<:Real
-  theta::Array{T,1} where T<:Real
-  function laminate(matid::Array{Int64,1},nply::Array{Int64,1},tply::Array{Real,1},theta::Array{Real,1})
+struct laminate{I<:Integer,R<:Real}
+  matid::Array{I,1}
+  nply::Array{I,1}
+  tply::Array{R,1}
+  theta::Array{R,1}
+  function laminate{I<:Integer,R<:Real}(matid::Array{<:Integer,1},nply::Array{<:Integer,1},tply::Array{<:Real,1},theta::Array{<:Real,1})
     if !(length(matid) == length(nply) == length(tply) == length(theta))
       error("All arrays must have same length")
     end

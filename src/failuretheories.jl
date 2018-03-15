@@ -1,6 +1,6 @@
 """
-    maxstress(stress::Array{Real,1},mat::material)
-    maxstress(stress::Array{Real,2},mat::Array{material,1},lam::laminate)
+    maxstress(stress::Array{<:Real,1},mat::material)
+    maxstress(stress::Array{<:Real,2},mat::Array{material,1},lam::laminate)
 Determines ply failure according to maximum stress failure theory.
 # Arguments
 - `stress`: First three rows correspond to sigma1,sigma2,tau12 respectively
@@ -28,11 +28,11 @@ function maxstress(sigma1::Real,sigma2::Real,tau12::Real,xt::Real,
   safetyfactor = 1./fail
   return fail,safetyfactor
 end
-maxstress(stress::Array{Real,1},mat::material) = maxstress(stress[1],
+maxstress(stress::Array{<:Real,1},mat::material) = maxstress(stress[1],
   stress[2],stress[3],mat.xt,mat.xc,mat.yt,mat.yc,mat.s)
 
 # Laminate evaluation method
-function maxstress(stress::Array{Real,2},mat::Array{material},lam::laminate)
+function maxstress(stress::Array{<:Real,2},mat::Array{material},lam::laminate)
   nlam = length(lam.matid)
   matfail = zeros(Real,6,nlam)
   sf = zeros(Real,6,nlam)
@@ -44,8 +44,8 @@ function maxstress(stress::Array{Real,2},mat::Array{material},lam::laminate)
 end
 
 """
-  tsaiwu(stress::Array{Real,1},mat::material)
-  tsaiwu(stress::Array{Real,2},mat::Array{material,1},lam::laminate)
+  tsaiwu(stress::Array{<:Real,1},mat::material)
+  tsaiwu(stress::Array{<:Real,2},mat::Array{material,1},lam::laminate)
 Determines ply failure according to tsai-wu failure theory. Values above one
 correspond to ply failure.
 # Arguments
@@ -61,11 +61,11 @@ function tsaiwu(sigma1::Real,sigma2::Real,tau12::Real,xt::Real,
   safetyfactor = [(-b+sqrt(b^2-4*a*c))/2a,(-b-sqrt(b^2-4*a*c))/2a]
   return a+b,safetyfactor
 end
-tsaiwu(stress::Array{Real,1},mat::material) = tsaiwu(stress[1],
+tsaiwu(stress::Array{<:Real,1},mat::material) = tsaiwu(stress[1],
   stress[2],stress[3],mat.xt,mat.xc,mat.yt,mat.yc,mat.s)
 
 # Laminate evaluation method
-function tsaiwu(stress::Array{Real,2},mat::Array{material},lam::laminate)
+function tsaiwu(stress::Array{<:Real,2},mat::Array{material},lam::laminate)
   nlam = length(lam.matid)
   matfail = zeros(Real,nlam)
   sf = zeros(Real,2,nlam)
@@ -78,8 +78,8 @@ end
 
 
 """
-    hashinrotem(stress::Array{Real,1},mat::material)
-    hashinrotem(stress::Array{Real,2},mat::Array{material,1},lam::laminate)
+    hashinrotem(stress::Array{<:Real,1},mat::material)
+    hashinrotem(stress::Array{<:Real,2},mat::Array{material,1},lam::laminate)
 Determines ply failure according to Hashin-Rotem failure theory.
 # Arguments
 - `stress`: First three rows correspond to sigma1,sigma2,tau12 respectively
@@ -108,11 +108,11 @@ function hashinrotem(sigma1::Real,sigma2::Real,tau12::Real,xt::Real,
                   sign(sigma2)*-1/sqrt(compressionfail)]
   return matfail,safetyfactor
 end
-hashinrotem(stress::Array{Real,1},mat::material) = hashinrotem(stress[1],
+hashinrotem(stress::Array{<:Real,1},mat::material) = hashinrotem(stress[1],
   stress[2],stress[3],mat.xt,mat.xc,mat.yt,mat.yc,mat.s)
 
 # Laminate evaluation method
-function hashinrotem(stress::Array{Real,2},mat::Array{material},lam::laminate)
+function hashinrotem(stress::Array{<:Real,2},mat::Array{material},lam::laminate)
   nlam = length(lam.matid)
   matfail = zeros(Real,4,nlam)
   sf = zeros(Real,4,nlam)

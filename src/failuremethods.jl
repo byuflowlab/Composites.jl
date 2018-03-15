@@ -1,13 +1,13 @@
 # Alternative single evaluation methods
-maxstress(stress::Array{Real,1},xt::Real,xc::Real,yt::Real,
+maxstress(stress::Array{<:Real,1},xt::Real,xc::Real,yt::Real,
   yc::Real,s::Real) = maxstress(stress[1],stress[2],stress[3],xt,xc,yt,yc,s)
 maxstress(sigma1::Real,sigma2::Real,tau12::Real,mat::material) =
   maxstress(sigma1,sigma2,tau12,mat.xt,mat.xc,mat.yt,mat.yc,mat.s)
 
 # Alternative laminate evaluation methods
-function maxstress(sigma1::Array{Real,1},sigma2::Array{Real,1},
-  tau12::Array{Real,1},xt::Array{Real,1},xc::Array{Real,1},yt::Array{Real,1},
-  yc::Array{Real,1},s::Array{Real,1},imat::Array{Real,1})
+function maxstress(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},
+  tau12::Array{<:Real,1},xt::Array{<:Real,1},xc::Array{<:Real,1},yt::Array{<:Real,1},
+  yc::Array{<:Real,1},s::Array{<:Real,1},imat::Array{<:Real,1})
   nlam = length(imat)
   matfail = zeros(Real,6,nlam)
   sf = zeros(Real,6,nlam)
@@ -17,21 +17,21 @@ function maxstress(sigma1::Array{Real,1},sigma2::Array{Real,1},
   end
   return matfail,sf
 end
-maxstress(sigma1::Array{Real,1},sigma2::Array{Real,1},
-  tau12::Array{Real,1},xt::Array{Real,1},xc::Array{Real,1},yt::Array{Real,1},
-  yc::Array{Real,1},s::Array{Real,1},lam::laminate) = maxstress(sigma1,
+maxstress(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},
+  tau12::Array{<:Real,1},xt::Array{<:Real,1},xc::Array{<:Real,1},yt::Array{<:Real,1},
+  yc::Array{<:Real,1},s::Array{<:Real,1},lam::laminate) = maxstress(sigma1,
   sigma2,tau12,xt,xc,yt,yc,s,lam.imat)
-maxstress(stress::Array{Real,2},xt::Array{Real,1},xc::Array{Real,1},
-  yt::Array{Real,1},yc::Array{Real,1},s::Array{Real,1},
-  imat::Array{Real,1}) = maxstress(stress[1,:],stress[2,:],stress[3,:],xt,xc,
+maxstress(stress::Array{<:Real,2},xt::Array{<:Real,1},xc::Array{<:Real,1},
+  yt::Array{<:Real,1},yc::Array{<:Real,1},s::Array{<:Real,1},
+  imat::Array{<:Real,1}) = maxstress(stress[1,:],stress[2,:],stress[3,:],xt,xc,
   yt,yc,s,imat)
-maxstress(stress::Array{Real,2},xt::Array{Real,1},xc::Array{Real,1},
-  yt::Array{Real,1},yc::Array{Real,1},s::Array{Real,1},
+maxstress(stress::Array{<:Real,2},xt::Array{<:Real,1},xc::Array{<:Real,1},
+  yt::Array{<:Real,1},yc::Array{<:Real,1},s::Array{<:Real,1},
   lam::laminate) = maxstress(stress[1,:],stress[2,:],stress[3,:],xt,xc,
   yt,yc,s,lam.imat)
 # Alternative laminate evaluation methods using mat::Array{material,1}
-function maxstress(sigma1::Array{Real,1},sigma2::Array{Real,1},
-  tau12::Array{Real,1},mat::material,imat::Array{Real,1})
+function maxstress(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},
+  tau12::Array{<:Real,1},mat::material,imat::Array{<:Real,1})
   nlam = length(imat)
   matfail = zeros(Real,6,nlam)
   for i = 1:nlam
@@ -40,23 +40,23 @@ function maxstress(sigma1::Array{Real,1},sigma2::Array{Real,1},
   end
   return matfail
 end
-maxstress(sigma1::Array{Real,1},sigma2::Array{Real,1},tau12::Array{Real,1},
+maxstress(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},tau12::Array{<:Real,1},
   mat::material,lam::laminate) = maxstress(sigma1,sigma2,tau12,mat,lam.imat)
-maxstress(stress::Array{Real,2},mat::material,imat::Array{Real,1}) =
+maxstress(stress::Array{<:Real,2},mat::material,imat::Array{<:Real,1}) =
   maxstress(stress[1,:],stress[2,:],stress[3,:],mat,imat)
-maxstress(stress::Array{Real,2},mat::material,lam::laminate) =
+maxstress(stress::Array{<:Real,2},mat::material,lam::laminate) =
   maxstress(stress[1,:],stress[2,:],stress[3,:],mat,lam.imat)
 
 # Alternative single evaluation methods
-tsaiwu(stress::Array{Real,1},xt::Real,xc::Real,yt::Real,
+tsaiwu(stress::Array{<:Real,1},xt::Real,xc::Real,yt::Real,
   yc::Real,s::Real) = tsaiwu(stress[1],stress[2],stress[3],xt,xc,yt,yc,s)
 tsaiwu(sigma1::Real,sigma2::Real,tau12::Real,mat::material) =
   tsaiwu(sigma1,sigma2,tau12,mat.xt,mat.xc,mat.yt,mat.yc,mat.s)
 
 # Alternative laminate evaluation methods
-function tsaiwu(sigma1::Array{Real,1},sigma2::Array{Real,1},
-  tau12::Array{Real,1},xt::Array{Real,1},xc::Array{Real,1},yt::Array{Real,1},
-  yc::Array{Real,1},s::Array{Real,1},imat::Array{Real,1})
+function tsaiwu(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},
+  tau12::Array{<:Real,1},xt::Array{<:Real,1},xc::Array{<:Real,1},yt::Array{<:Real,1},
+  yc::Array{<:Real,1},s::Array{<:Real,1},imat::Array{<:Real,1})
   nlam = length(imat)
   matfail = zeros(Real,nlam)
   sf = zeros(Real,2,nlam)
@@ -66,21 +66,21 @@ function tsaiwu(sigma1::Array{Real,1},sigma2::Array{Real,1},
   end
   return matfail,sf1,sf2
 end
-tsaiwu(sigma1::Array{Real,1},sigma2::Array{Real,1},
-  tau12::Array{Real,1},xt::Array{Real,1},xc::Array{Real,1},yt::Array{Real,1},
-  yc::Array{Real,1},s::Array{Real,1},lam::laminate) = tsaiwu(sigma1,
+tsaiwu(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},
+  tau12::Array{<:Real,1},xt::Array{<:Real,1},xc::Array{<:Real,1},yt::Array{<:Real,1},
+  yc::Array{<:Real,1},s::Array{<:Real,1},lam::laminate) = tsaiwu(sigma1,
   sigma2,tau12,xt,xc,yt,yc,s,lam.imat)
-tsaiwu(stress::Array{Real,2},xt::Array{Real,1},xc::Array{Real,1},
-  yt::Array{Real,1},yc::Array{Real,1},s::Array{Real,1},
-  imat::Array{Real,1}) = tsaiwu(stress[1,:],stress[2,:],stress[3,:],xt,xc,
+tsaiwu(stress::Array{<:Real,2},xt::Array{<:Real,1},xc::Array{<:Real,1},
+  yt::Array{<:Real,1},yc::Array{<:Real,1},s::Array{<:Real,1},
+  imat::Array{<:Real,1}) = tsaiwu(stress[1,:],stress[2,:],stress[3,:],xt,xc,
   yt,yc,s,imat)
-tsaiwu(stress::Array{Real,2},xt::Array{Real,1},xc::Array{Real,1},
-  yt::Array{Real,1},yc::Array{Real,1},s::Array{Real,1},
+tsaiwu(stress::Array{<:Real,2},xt::Array{<:Real,1},xc::Array{<:Real,1},
+  yt::Array{<:Real,1},yc::Array{<:Real,1},s::Array{<:Real,1},
   lam::laminate) = tsaiwu(stress[1,:],stress[2,:],stress[3,:],xt,xc,
   yt,yc,s,lam.imat)
 # Alternative laminate evaluation methods using mat::Array{material,1}
-function tsaiwu(sigma1::Array{Real,1},sigma2::Array{Real,1},
-  tau12::Array{Real,1},mat::material,imat::Array{Real,1})
+function tsaiwu(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},
+  tau12::Array{<:Real,1},mat::material,imat::Array{<:Real,1})
   nlam = length(imat)
   matfail = zeros(Real,nlam)
   for i = 1:nlam
@@ -89,24 +89,24 @@ function tsaiwu(sigma1::Array{Real,1},sigma2::Array{Real,1},
   end
   return matfail
 end
-tsaiwu(sigma1::Array{Real,1},sigma2::Array{Real,1},tau12::Array{Real,1},
+tsaiwu(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},tau12::Array{<:Real,1},
   mat::material,lam::laminate) = tsaiwu(sigma1,sigma2,tau12,mat,lam.imat)
-tsaiwu(stress::Array{Real,2},mat::material,imat::Array{Real,1}) =
+tsaiwu(stress::Array{<:Real,2},mat::material,imat::Array{<:Real,1}) =
   tsaiwu(stress[1,:],stress[2,:],stress[3,:],mat,imat)
-tsaiwu(stress::Array{Real,2},mat::material,lam::laminate) =
+tsaiwu(stress::Array{<:Real,2},mat::material,lam::laminate) =
   tsaiwu(stress[1,:],stress[2,:],stress[3,:],mat,lam.imat)
 
 
 # Alternative single evaluation methods
-hashinrotem(stress::Array{Real,1},xt::Real,xc::Real,yt::Real,
+hashinrotem(stress::Array{<:Real,1},xt::Real,xc::Real,yt::Real,
   yc::Real,s::Real) = hashinrotem(stress[1],stress[2],stress[3],xt,xc,yt,yc,s)
 hashinrotem(sigma1::Real,sigma2::Real,tau12::Real,mat::material) =
   hashinrotem(sigma1,sigma2,tau12,mat.xt,mat.xc,mat.yt,mat.yc,mat.s)
 
 # Alternative laminate evaluation methods
-function hashinrotem(sigma1::Array{Real,1},sigma2::Array{Real,1},
-  tau12::Array{Real,1},xt::Array{Real,1},xc::Array{Real,1},yt::Array{Real,1},
-  yc::Array{Real,1},s::Array{Real,1},imat::Array{Real,1})
+function hashinrotem(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},
+  tau12::Array{<:Real,1},xt::Array{<:Real,1},xc::Array{<:Real,1},yt::Array{<:Real,1},
+  yc::Array{<:Real,1},s::Array{<:Real,1},imat::Array{<:Real,1})
   nlam = length(imat)
   matfail = zeros(Real,4,nlam)
   sf = zeros(Real,4,nlam)
@@ -116,21 +116,21 @@ function hashinrotem(sigma1::Array{Real,1},sigma2::Array{Real,1},
   end
   return matfail,sf
 end
-hashinrotem(sigma1::Array{Real,1},sigma2::Array{Real,1},
-  tau12::Array{Real,1},xt::Array{Real,1},xc::Array{Real,1},yt::Array{Real,1},
-  yc::Array{Real,1},s::Array{Real,1},lam::laminate) = hashinrotem(sigma1,
+hashinrotem(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},
+  tau12::Array{<:Real,1},xt::Array{<:Real,1},xc::Array{<:Real,1},yt::Array{<:Real,1},
+  yc::Array{<:Real,1},s::Array{<:Real,1},lam::laminate) = hashinrotem(sigma1,
   sigma2,tau12,xt,xc,yt,yc,s,lam.imat)
-hashinrotem(stress::Array{Real,2},xt::Array{Real,1},xc::Array{Real,1},
-  yt::Array{Real,1},yc::Array{Real,1},s::Array{Real,1},
-  imat::Array{Real,1}) = hashinrotem(stress[1,:],stress[2,:],stress[3,:],xt,xc,
+hashinrotem(stress::Array{<:Real,2},xt::Array{<:Real,1},xc::Array{<:Real,1},
+  yt::Array{<:Real,1},yc::Array{<:Real,1},s::Array{<:Real,1},
+  imat::Array{<:Real,1}) = hashinrotem(stress[1,:],stress[2,:],stress[3,:],xt,xc,
   yt,yc,s,imat)
-hashinrotem(stress::Array{Real,2},xt::Array{Real,1},xc::Array{Real,1},
-  yt::Array{Real,1},yc::Array{Real,1},s::Array{Real,1},
+hashinrotem(stress::Array{<:Real,2},xt::Array{<:Real,1},xc::Array{<:Real,1},
+  yt::Array{<:Real,1},yc::Array{<:Real,1},s::Array{<:Real,1},
   lam::laminate) = hashinrotem(stress[1,:],stress[2,:],stress[3,:],xt,xc,
   yt,yc,s,lam.imat)
 # Alternative laminate evaluation methods using mat::Array{material,1}
-function hashinrotem(sigma1::Array{Real,1},sigma2::Array{Real,1},
-  tau12::Array{Real,1},mat::material,imat::Array{Real,1})
+function hashinrotem(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},
+  tau12::Array{<:Real,1},mat::material,imat::Array{<:Real,1})
   nlam = length(imat)
   matfail = zeros(Real,4,nlam)
   for i = 1:nlam
@@ -139,9 +139,9 @@ function hashinrotem(sigma1::Array{Real,1},sigma2::Array{Real,1},
   end
   return matfail
 end
-hashinrotem(sigma1::Array{Real,1},sigma2::Array{Real,1},tau12::Array{Real,1},
+hashinrotem(sigma1::Array{<:Real,1},sigma2::Array{<:Real,1},tau12::Array{<:Real,1},
   mat::material,lam::laminate) = hashinrotem(sigma1,sigma2,tau12,mat,lam.imat)
-hashinrotem(stress::Array{Real,2},mat::material,imat::Array{Real,1}) =
+hashinrotem(stress::Array{<:Real,2},mat::material,imat::Array{<:Real,1}) =
   hashinrotem(stress[1,:],stress[2,:],stress[3,:],mat,imat)
-hashinrotem(stress::Array{Real,2},mat::material,lam::laminate) =
+hashinrotem(stress::Array{<:Real,2},mat::material,lam::laminate) =
   hashinrotem(stress[1,:],stress[2,:],stress[3,:],mat,lam.imat)

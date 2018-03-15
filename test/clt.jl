@@ -16,7 +16,7 @@ matid = [4,4,4,4,4,4,4]
 nply = [5,5,5,10,5,5,5]
 tply = [0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001]
 theta = [0.0,45.0,-45.0,90.0,-45.0,45.0,0.0]
-lam = Composites.laminate(matid,nply,tply,theta)
+lam = Composites.laminate{Int64,Float64}(matid,nply,tply,theta)
 
 # getz(tply::Array{Float64,1},nply::Array{Int64,1))
 z = Composites.getz(tply,nply)
