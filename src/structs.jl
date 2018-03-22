@@ -9,18 +9,19 @@ struct material{R<:Real}
   yt::R #transverse tensile ultimate strength (Pa)
   yc::R #transverse compressive ultimate strength (Pa)
   s::R #shear ultimate strength (Pa)
+  t::R # ply thickness
 end
 
 function material(e1::Array{<:Real,1},e2::Array{<:Real,1},g12::Array{<:Real,1},
   nu12::Array{<:Real,1},rho::Array{<:Real,1},xt::Array{<:Real,1},
   xc::Array{<:Real,1},yt::Array{<:Real,1},yc::Array{<:Real,1},
-  s::Array{<:Real,1})
+  s::Array{<:Real,1},t::Array{<:Real,1})
 
   nmat = length(e1)
   matprops = Array{material,1}(nmat)
   for i = 1:nmat
     matprops[i] = material(e1[i],e2[i],g12[i],nu12[i],rho[i],xt[i],
-                           xc[i],yt[i],yc[i],s[i])
+                           xc[i],yt[i],yc[i],s[i],t[i])
   end
   return matprops
 end

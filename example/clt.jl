@@ -11,7 +11,8 @@ xc = [1500.0,1540.0,610.0,235.0]*1e6
 yt = [40.0,56.0,31.0,12.0]*1e6
 yc = [246.0,150.0,118.0,53.0]*1e6
 s = [68.0,98.0,72.0,34.0]*1e6
-mat = Composites.material(e1,e2,g12,nu12,rho,xt,xc,yt,yc,s)
+t = fill(0.0001,4)
+mat = Composites.material(e1,e2,g12,nu12,rho,xt,xc,yt,yc,s,t)
 
 # Step 2: Input Ply Information
 matid = [4,4,4,4,4,4,4]
