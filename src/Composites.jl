@@ -6,6 +6,8 @@ of Composite Structures" by Kassapoglou.
 module Composites
 export stiffness,compliance,plystrain,plystress
 
+__precompile__()
+
 # Some modules structs
 include("structs.jl")
 # ABD matrix calculations
