@@ -12,7 +12,7 @@ yt = [40.0,56.0,31.0,12.0]*1e6
 yc = [246.0,150.0,118.0,53.0]*1e6
 s = [68.0,98.0,72.0,34.0]*1e6
 t = fill(0.0001,4)
-mat = Composites.material(e1,e2,g12,nu12,rho,xt,xc,yt,yc,s,t)
+mat = Composites.material.(e1,e2,g12,nu12,rho,xt,xc,yt,yc,s,t)
 
 # Step 2: Input Ply Information
 matid = [4,4,4,4,4,4,4]
@@ -22,7 +22,7 @@ theta = [0.0,45.0,-45.0,90.0,-45.0,45.0,0.0]
 lam = Composites.laminate(matid,nply,tply,theta)
 
 # Step 3: Get Material Stiffness Matrix (Q)
-q = Composites.getQ(mat)
+q = Composites.getQ.(mat)
 
 # Step 4: Determine Laminate Stiffness Matrix (A,B, and D)
 A,B,D = Composites.getABD(lam,q)
@@ -42,9 +42,9 @@ lowerplystress = Composites.getplystress(lowerplystrain,q,lam)
 upperplystress = Composites.getplystress(upperplystrain,q,lam)
 
 # Step 8: Apply appropriate material failure criteria
-lowermaxstress,lsfmaxstress = Composites.maxstress(lowerplystress,mat,lam)
-uppermaxstress,usfmaxstress = Composites.maxstress(upperplystress,mat,lam)
-lowertsai,lsftsai = Composites.tsaiwu(lowerplystress,mat,lam)
-uppertsai,usftsai = Composites.tsaiwu(upperplystress,mat,lam)
-lowerhashinrotem,lsfhashinrotem = Composites.hashinrotem(lowerplystress,mat,lam)
-upperhashinrotem,usfhashinrotem = Composites.hashinrotem(upperplystress,mat,lam)
+lowermaxstress,lsfmaxstress = Composites.getmatfail(lowerplystress,mat,lam,"maxstress")
+uppermaxstress,usfmaxstress = Composites.getmatfail(upperplystress,mat,lam,"maxstress")
+lowertsai,lsftsai = Composites.getmatfail(lowerplystress,mat,lam,"tsaiwu")
+uppertsai,usftsai = Composites.getmatfail(upperplystress,mat,lam,"tsaiwu")
+lowerhashinrotem,lsfhashinrotem = Composites.getmatfail(lowerplystress,mat,lam,"hashinrotem")
+upperhashinrotem,usfhashinrotem = Composites.getmatfail(upperplystress,mat,lam,"hashinrotem")

@@ -4,7 +4,6 @@ a thin plate laminate.  Analysis is based on chapter 3 of "Design and Analysis
 of Composite Structures" by Kassapoglou.
 """
 module Composites
-export stiffness,compliance,plystrain,plystress
 
 __precompile__()
 
@@ -18,7 +17,5 @@ include("stressstrain.jl")
 include("failuretheories.jl")
 # Buckling related functions
 include("buckling.jl")
-# Additional methods for calling material failure theories
-include("failuremethods.jl")
 
 end #module

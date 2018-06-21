@@ -42,7 +42,7 @@
            13.15 18.45 11.60;
            11.60 11.60 14.25]
 
-  q = Composites.getQ(e1,e2,g12,nu12)
+  q = Composites.getQ.(e1,e2,g12,nu12)
   A,B,D = Composites.getABD(matid,nply,tply,theta,q)
   for i = 1:size(qbartest,1)
     for j = 1:size(qbartest,2)
