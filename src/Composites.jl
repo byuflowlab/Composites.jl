@@ -5,7 +5,7 @@ of Composite Structures" by Kassapoglou.
 """
 module Composites
 
-__precompile__()
+import LinearAlgebra
 
 # Some modules structs
 include("structs.jl")

@@ -9,7 +9,7 @@ lamina.
 """
 function getz(tply::AbstractArray{<:Real,1}, nply::AbstractArray{<:Integer,1})
     tlam = tply.*nply
-    return unshift!(cumsum(tlam), 0.0)-sum(tlam)/2.0
+    return pushfirst!(cumsum(tlam), 0.0).-sum(tlam)/2.0
 end
 
 getz(lam::laminate) = getz(lam.tply, lam.nply)
@@ -49,7 +49,7 @@ function rotQ(q::AbstractArray{<:Real,2}, theta::Real)
         c = cosd(theta)
         s = sind(theta)
         tsigma = [c^2.0 s^2.0 2*c*s; s^2.0 c^2.0 -2*c*s; -c*s c*s c^2-s^2]
-        teps = Diagonal([1.0,1.0,2.0])*tsigma*Diagonal([1.0,1.0,0.5])
+        teps = LinearAlgebra.Diagonal([1.0,1.0,2.0])*tsigma*LinearAlgebra.Diagonal([1.0,1.0,0.5])
         qbar = tsigma\q*teps
     else
         qbar = q

@@ -1,4 +1,4 @@
 import Composites
-using Base.Test
+using Test
 include("textbookabd.jl")
 include("clt.jl")
