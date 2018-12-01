@@ -47,7 +47,7 @@ function getmatfail(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
         b = (1.0/xt-1.0/xc)*sigma1+(1.0/yt-1.0/yc)*sigma2
         c = -1
         fail = a+b
-        safetyfactor = [(-b+sqrt(b^2-4*a*c))/2a,(-b-sqrt(b^2-4*a*c))/2a]
+        safetyfactor = abs(fail) > 1e-20 ? (-b+sqrt(b^2-4*a*c))/(2a) : 999999.0
     elseif method == "hashinrotem"
         tensionfail = (sigma2^2.0/yt^2.0+tau12^2.0/s^2.0)
         compressionfail = (sigma2^2.0/yc^2.0+tau12^2.0/s^2.0)
