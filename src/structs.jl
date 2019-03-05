@@ -28,6 +28,10 @@ struct material{R<:Real}
     t::R # ply thickness
 end
 
+Base.convert(::Type{material{R}}, mat::material) where R<:Real = material{R}(mat)
+(::Type{material{R}})(mat::material) where R<:Real = material{R}(
+    [getfield(mat,field) for field in fieldnames(material)]...)
+
 """
     `laminate{I<:Integer,R<:Real}(matid, nply, tply, theta)`
 Returns struct containing laminate properties
@@ -37,9 +41,13 @@ Returns struct containing laminate properties
 - `tply::Array{R,1}`: ply thickness for each lamina
 - `theta::Array{I,1}`: orientation of each lamina (degrees)
 """
-struct laminate{I<:Integer,R<:Real}
-    matid::Array{I,1}
-    nply::Array{I,1}
+struct laminate{R<:Real}
+    matid::Array{Int,1}
+    nply::Array{Int,1}
     tply::Array{R,1}
     theta::Array{R,1}
 end
+
+Base.convert(::Type{laminate{R}}, lam::laminate) where R<:Real = laminate{R}(lam)
+(::Type{laminate{R}})(lam::laminate) where R<:Real = laminate{R}(
+    [getfield(lam,field) for field in fieldnames(laminate)]...)

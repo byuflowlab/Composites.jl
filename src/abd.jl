@@ -9,7 +9,7 @@ lamina.
 """
 function getz(tply::AbstractArray{<:Real,1}, nply::AbstractArray{<:Integer,1})
     tlam = tply.*nply
-    return pushfirst!(cumsum(tlam), 0.0).-sum(tlam)/2.0
+    return pushfirst!(cumsum(tlam), zero(eltype(tlam))).-sum(tlam)/2.0
 end
 
 getz(lam::laminate) = getz(lam.tply, lam.nply)
@@ -45,7 +45,7 @@ getQ(mat::Array{material,1}, lam::laminate) = getQ.(mat, lam.theta)
 Rotates Q matrix by theta degrees
 """
 function rotQ(q::AbstractArray{<:Real,2}, theta::Real)
-    if theta != 0.0
+    if theta != zero(eltype(theta))
         c = cosd(theta)
         s = sind(theta)
         tsigma = [c^2.0 s^2.0 2*c*s; s^2.0 c^2.0 -2*c*s; -c*s c*s c^2-s^2]
@@ -58,7 +58,8 @@ function rotQ(q::AbstractArray{<:Real,2}, theta::Real)
 end
 
 function rotQ(q11::Real, q12::Real, q22::Real, q66::Real, theta::Real)
-  q = [q11 q12 0.0; q12 q22 0.0; 0.0 0.0 q66]
+  q0 = zero(eltype(q11))
+  q = [q11 q12 q0; q12 q22 q0; q0 q0 q66]
   return rotQ(q, theta)
 end
 
@@ -83,16 +84,16 @@ function getABD(matid::AbstractArray{<:Integer,1},
     nply::AbstractArray{<:Integer,1}, tply::AbstractArray{<:Real,1},
     theta::AbstractArray{<:Real,1}, q::AbstractArray{<:AbstractArray{<:Real,2},1})
 
-    R = typeof(q[1][1])
+    realtype = eltype(eltype(tply))
 
     nlam = length(nply)
 
     z = getz(tply, nply)
 
     # Loop through layers filling in ABD matrix
-    A = zeros(R, 3, 3)
-    B = zeros(R, 3, 3)
-    D = zeros(R, 3, 3)
+    A = zeros(realtype, 3, 3)
+    B = zeros(realtype, 3, 3)
+    D = zeros(realtype, 3, 3)
     for k = 1:nlam
         # Rotate material stiffness properties by specifed angle
         imat = matid[k]
