@@ -33,13 +33,13 @@ Base.convert(::Type{material{R}}, mat::material) where R<:Real = material{R}(mat
     [getfield(mat,field) for field in fieldnames(material)]...)
 
 """
-    `laminate{I<:Integer,R<:Real}(matid, nply, tply, theta)`
+    `laminate{R<:Real}(matid, nply, tply, theta)`
 Returns struct containing laminate properties
 # Arguments/Fields
-- `matid::Array{I,1}`: material id for each lamina
-- `nply::Array{I,1}`: number of plies in each lamina
-- `tply::Array{R,1}`: ply thickness for each lamina
-- `theta::Array{I,1}`: orientation of each lamina (degrees)
+- `matid::Array{Int, 1}`: material id for each lamina
+- `nply::Array{Int, 1}`: number of plies in each lamina
+- `tply::Array{R, 1}`: ply thickness for each lamina
+- `theta::Array{Int, 1}`: orientation of each lamina (degrees)
 """
 struct laminate{R<:Real}
     matid::Array{Int,1}
