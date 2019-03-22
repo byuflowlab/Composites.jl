@@ -18,4 +18,6 @@ include("failuretheories.jl")
 # Buckling related functions
 include("buckling.jl")
 
+include("deprecated.jl")
+
 end #module

@@ -30,7 +30,7 @@ end
     `getplystrain(nply::AbstractArray{<:Integer,1}, tply::AbstractArray{<:Real,1},
         theta::AbstractArray{<:Real,1}, resultantstrain::AbstractArray{<:Real,1})`
 
-    `getplystrain(lam::laminate, resultantstrain::AbstractArray{<:Real,1})`
+    `getplystrain(lam::Laminate, resultantstrain::AbstractArray{<:Real,1})`
 
 Calculates strains in each ply aligned with principal material direction.
 """
@@ -52,7 +52,7 @@ function getplystrain(nply::AbstractArray{<:Integer,1}, tply::AbstractArray{<:Re
 
   return lowerplystrain, upperplystrain
 end
-getplystrain(lam::laminate, resultantstrain::AbstractArray{<:Real,1}) =
+getplystrain(lam::Laminate, resultantstrain::AbstractArray{<:Real,1}) =
     getplystrain(lam.nply, lam.tply, lam.theta, resultantstrain)
 
 """
@@ -61,7 +61,7 @@ getplystrain(lam::laminate, resultantstrain::AbstractArray{<:Real,1}) =
         matid::AbstractArray{<:Integer,1})`
 
     `getplystress(plystrain::AbstractArray{<:AbstractArray{<:Real,1},1},
-        q::AbstractArray{<:AbstractArray{<:Real,2},1}, lam::laminate)`
+        q::AbstractArray{<:AbstractArray{<:Real,2},1}, lam::Laminate)`
 
 Calculates ply stresses from ply strains and material stiffness matrices (`q`)
 """
@@ -72,5 +72,5 @@ function getplystress(plystrain::AbstractArray{<:AbstractArray{<:Real,1},1},
     return [q[matid[i]]*plystrain[i] for i in 1:length(matid)]
 end
 getplystress(plystrain::AbstractArray{<:AbstractArray{<:Real,1},1},
-    q::AbstractArray{<:AbstractArray{<:Real,2},1}, lam::laminate) =
+    q::AbstractArray{<:AbstractArray{<:Real,2},1}, lam::Laminate) =
     getplystress(plystrain, q, lam.matid)

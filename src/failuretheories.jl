@@ -2,16 +2,16 @@
     `getmatfail(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
         xc::Real, yt::Real, yc::Real, s::Real, method::String)`
 
-    `getmatfail(sigma1::Real, sigma2::Real, tau12::Real, mat::material,
+    `getmatfail(sigma1::Real, sigma2::Real, tau12::Real, mat::Material,
         method::String)`
 
-    `getmatfail(stress::AbstractArray{<:Real,1}, mat::material, method::String)`
+    `getmatfail(stress::AbstractArray{<:Real,1}, mat::Material, method::String)`
 
     `getmatfail(stress::AbstractArray{<:Real,1},xt::Real,xc::Real,yt::Real,
         yc::Real,s::Real, method::String)`
 
     `getmatfail(stress::AbstractArray{<:AbstractArray{<:Real,1},1},
-        mat::AbstractArray{material}, lam::laminate, method::String)`
+        mat::AbstractArray{Material}, lam::Laminate, method::String)`
 
 Determines ply failure according to specified theory. Values greater than one
 signify ply failure. Choose between "maxstress", "tsaiwu", and "hashinrotem".
@@ -63,7 +63,7 @@ function getmatfail(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
     return fail, safetyfactor
 end
 
-getmatfail(stress::AbstractArray{<:Real,1}, mat::material, method::String) =
+getmatfail(stress::AbstractArray{<:Real,1}, mat::Material, method::String) =
     getmatfail(stress[1], stress[2], stress[3], mat.xt, mat.xc, mat.yt, mat.yc,
     mat.s, method)
 
@@ -71,11 +71,11 @@ getmatfail(stress::AbstractArray{<:Real,1}, xt::Real, xc::Real, yt::Real,
     yc::Real, s::Real, method::String) = getmatfail(stress[1], stress[2],
     stress[3], xt, xc, yt, yc, s, method)
 
-getmatfail(sigma1::Real, sigma2::Real, tau12::Real, mat::material, method::String) =
+getmatfail(sigma1::Real, sigma2::Real, tau12::Real, mat::Material, method::String) =
     getmatfail(sigma1, sigma2, tau12, mat.xt, mat.xc, mat.yt, mat.yc, mat.s, method)
 
 function getmatfail(stress::AbstractArray{<:AbstractArray{<:Real,1},1},
-    mat::AbstractArray{<:material,1}, lam::laminate, method::String)
+    mat::AbstractArray{<:Material,1}, lam::Laminate, method::String)
 
     result = [getmatfail(stress[i][1], stress[i][2], stress[i][3],
         mat[lam.matid[i]].xt, mat[lam.matid[i]].xc,

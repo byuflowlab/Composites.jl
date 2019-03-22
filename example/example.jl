@@ -12,14 +12,14 @@ yt = [40.0,56.0,31.0,12.0]*1e6
 yc = [246.0,150.0,118.0,53.0]*1e6
 s = [68.0,98.0,72.0,34.0]*1e6
 t = fill(0.0001,4)
-mat = Composites.material.(e1,e2,g12,nu12,rho,xt,xc,yt,yc,s,t)
+mat = Composites.Material.(e1,e2,g12,nu12,rho,xt,xc,yt,yc,s,t)
 
 # Step 2: Input Ply Information
 matid = [4,4,4,4,4,4,4]
 nply = [5,5,5,10,5,5,5]
 tply = [0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001]
 theta = [0.0,45.0,-45.0,90.0,-45.0,45.0,0.0]
-lam = Composites.laminate(matid,nply,tply,theta)
+lam = Composites.Laminate(matid,nply,tply,theta)
 
 # Step 3: Get Material Stiffness Matrix (Q)
 q = Composites.getQ.(mat)

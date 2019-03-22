@@ -1,7 +1,7 @@
 """
     `getz(tply::AbstractArray{<:Real,1}, nply::AbstractArray{<:Integer,1})`
 
-    `getz(lam::laminate)`
+    `getz(lam::Laminate)`
 
 Returns a laminate's z-coordinates (coordinates of top and bottom of laminas)
 given the thickness of plies in each lamina and the number of plies in each
@@ -12,14 +12,14 @@ function getz(tply::AbstractArray{<:Real,1}, nply::AbstractArray{<:Integer,1})
     return pushfirst!(cumsum(tlam), zero(eltype(tlam))).-sum(tlam)/2.0
 end
 
-getz(lam::laminate) = getz(lam.tply, lam.nply)
+getz(lam::Laminate) = getz(lam.tply, lam.nply)
 
 """
     `getQ(e1::Real, e2::Real, g12::Real, nu12::Real, theta::Real=0.0)`
 
-    `getQ(mat::material, theta::Real)`
+    `getQ(mat::Material, theta::Real)`
 
-    `getQ(mat::material, lam::laminate)`
+    `getQ(mat::Material, lam::Laminate)`
 
 Returns Q matrix rotated `theta` degrees
 """
@@ -32,10 +32,10 @@ function getQ(e1::Real, e2::Real, g12::Real, nu12::Real, theta::Real=0.0)
     return rotQ(q11, q12, q22, q66, theta)
 end
 
-getQ(mat::material, theta::Real=0.0) = getQ(mat.e1, mat.e2, mat.g12, mat.nu12,
+getQ(mat::Material, theta::Real=0.0) = getQ(mat.e1, mat.e2, mat.g12, mat.nu12,
     theta)
 
-getQ(mat::Array{material,1}, lam::laminate) = getQ.(mat, lam.theta)
+getQ(mat::Array{Material,1}, lam::Laminate) = getQ.(mat, lam.theta)
 
 """
     `rotQ(q::AbstractArray{<:Real,2}, theta::Real)`
@@ -69,7 +69,7 @@ end
         theta::AbstractArray{<:Real,1},
         q::AbstractArray{<:AbstractArray{<:Real,2},1})`
 
-    `getABD(lam::laminate, q::AbstractArray{<:AbstractArray{<:Real,2},1})`
+    `getABD(lam::Laminate, q::AbstractArray{<:AbstractArray{<:Real,2},1})`
 
 Returns A, B, and D matrices
 
@@ -111,7 +111,7 @@ function getABD(matid::AbstractArray{<:Integer,1},
 
     return A, B, D
 end
-getABD(lam::laminate, q::AbstractArray{<:AbstractArray{<:Real,2},1}) =
+getABD(lam::Laminate, q::AbstractArray{<:AbstractArray{<:Real,2},1}) =
     getABD(lam.matid, lam.nply, lam.tply, lam.theta, q)
 
 """
