@@ -41,7 +41,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.compliance-Tuple{AbstractArray{#s23,2} where #s23<:Real,AbstractArray{#s22,2} where #s22<:Real,AbstractArray{#s21,2} where #s21<:Real}",
+    "location": "library/#Composites.compliance-Tuple{AbstractArray{#s29,2} where #s29<:Real,AbstractArray{#s28,2} where #s28<:Real,AbstractArray{#s27,2} where #s27<:Real}",
     "page": "Library",
     "title": "Composites.compliance",
     "category": "method",
@@ -49,9 +49,9 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.getABD-Tuple{AbstractArray{#s21,1} where #s21<:Integer,AbstractArray{#s22,1} where #s22<:Integer,AbstractArray{#s23,1} where #s23<:Real,AbstractArray{#s24,1} where #s24<:Real,AbstractArray{#s25,1} where #s25<:(AbstractArray{#s26,2} where #s26<:Real)}",
+    "location": "library/#Composites.getABD!-Tuple{AbstractArray{#s24,2} where #s24<:Real,AbstractArray{#s25,2} where #s25<:Real,AbstractArray{#s26,2} where #s26<:Real,AbstractArray{#s27,1} where #s27<:Integer,AbstractArray{#s28,1} where #s28<:Integer,AbstractArray{#s29,1} where #s29<:Real,AbstractArray{#s30,1} where #s30<:Real,AbstractArray{#s31,1} where #s31<:(AbstractArray{#s32,2} where #s32<:Real)}",
     "page": "Library",
-    "title": "Composites.getABD",
+    "title": "Composites.getABD!",
     "category": "method",
     "text": "`getABD(matid::AbstractArray{<:Integer,1},\n    nply::AbstractArray{<:Integer,1}, tply::AbstractArray{<:Real,1},\n    theta::AbstractArray{<:Real,1},\n    q::AbstractArray{<:AbstractArray{<:Real,2},1})`\n\n`getABD(lam::Laminate, q::AbstractArray{<:AbstractArray{<:Real,2},1})`\n\nReturns A, B, and D matrices\n\nArguments:\n\nmatid::AbstractArray{<:Integer,1}: material id of each lamina\nnply::AbstractArray{<:Integer,1}: number of plies in each lamina\ntply::AbstractArray{<:Real,1}: thickness of a ply (m) in each lamina\ntheta::AbstractArray{<:Real,1}: orientation (deg) of each lamina\nq::AbstractArray{<:AbstractArray{<:Real,2}}: Stiffness matrix of each lamina\n\n\n\n\n\n"
 },
@@ -73,7 +73,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.getplystrain-Tuple{AbstractArray{#s22,1} where #s22<:Integer,AbstractArray{#s21,1} where #s21<:Real,AbstractArray{#s20,1} where #s20<:Real,AbstractArray{#s19,1} where #s19<:Real}",
+    "location": "library/#Composites.getplystrain-Tuple{AbstractArray{#s28,1} where #s28<:Integer,AbstractArray{#s27,1} where #s27<:Real,AbstractArray{#s26,1} where #s26<:Real,AbstractArray{#s25,1} where #s25<:Real}",
     "page": "Library",
     "title": "Composites.getplystrain",
     "category": "method",
@@ -81,7 +81,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.getplystress-Tuple{AbstractArray{#s21,1} where #s21<:(AbstractArray{#s20,1} where #s20<:Real),AbstractArray{#s19,1} where #s19<:(AbstractArray{#s18,2} where #s18<:Real),AbstractArray{#s17,1} where #s17<:Integer}",
+    "location": "library/#Composites.getplystress-Tuple{AbstractArray{#s27,1} where #s27<:(AbstractArray{#s26,1} where #s26<:Real),AbstractArray{#s25,1} where #s25<:(AbstractArray{#s24,2} where #s24<:Real),AbstractArray{#s23,1} where #s23<:Integer}",
     "page": "Library",
     "title": "Composites.getplystress",
     "category": "method",
@@ -97,7 +97,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.localbuckling-Tuple{AbstractArray{#s24,2} where #s24<:Real,AbstractArray{#s23,2} where #s23<:Real,Real}",
+    "location": "library/#Composites.localbuckling-Tuple{AbstractArray{#s30,2} where #s30<:Real,AbstractArray{#s29,2} where #s29<:Real,Real}",
     "page": "Library",
     "title": "Composites.localbuckling",
     "category": "method",
@@ -105,25 +105,25 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.rotQ-Tuple{AbstractArray{#s14,2} where #s14<:Real,Real}",
+    "location": "library/#Composites.rotQ!-Tuple{AbstractArray{#s14,2} where #s14<:Real,Real}",
     "page": "Library",
-    "title": "Composites.rotQ",
+    "title": "Composites.rotQ!",
     "category": "method",
     "text": "`rotQ(q::AbstractArray{<:Real,2}, theta::Real)`\n\n`rotQ(qxx::Real, q12::Real, q22::Real, q66::Real, theta::Real)`\n\nRotates Q matrix by theta degrees\n\n\n\n\n\n"
 },
 
 {
-    "location": "library/#Composites.rotstrain-Tuple{AbstractArray{#s25,1} where #s25<:Real,Real}",
+    "location": "library/#Composites.rotstrain!-Tuple{AbstractArray{#s31,1} where #s31<:Real,Real}",
     "page": "Library",
-    "title": "Composites.rotstrain",
+    "title": "Composites.rotstrain!",
     "category": "method",
     "text": "`rotstrain(strain,theta)`\n\nRotates strain theta degrees. strain = [eps1,eps2,gamma12]\n\n\n\n\n\n"
 },
 
 {
-    "location": "library/#Composites.rotstress-Tuple{AbstractArray{#s25,1} where #s25<:Real,Real}",
+    "location": "library/#Composites.rotstress!-Tuple{AbstractArray{#s31,1} where #s31<:Real,Real}",
     "page": "Library",
-    "title": "Composites.rotstress",
+    "title": "Composites.rotstress!",
     "category": "method",
     "text": "`rotstress(stress,theta)`\n\nRotates stress theta degrees. stress = [sigma1,sigma2,tau12]\n\n\n\n\n\n"
 },
