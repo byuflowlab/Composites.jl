@@ -65,7 +65,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.getmatfail-Tuple{Real,Real,Real,Real,Real,Real,Real,Real,String}",
+    "location": "library/#Composites.getmatfail-Tuple{Real,Real,Real,Real,Real,Real,Real,Real,AbstractString}",
     "page": "Library",
     "title": "Composites.getmatfail",
     "category": "method",
@@ -89,7 +89,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.getz-Tuple{AbstractArray{#s14,1} where #s14<:Real,AbstractArray{#s15,1} where #s15<:Integer}",
+    "location": "library/#Composites.getz-Tuple{AbstractArray{#s15,1} where #s15<:Real,AbstractArray{#s16,1} where #s16<:Integer}",
     "page": "Library",
     "title": "Composites.getz",
     "category": "method",
@@ -105,7 +105,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.rotQ!-Tuple{AbstractArray{#s14,2} where #s14<:Real,Real}",
+    "location": "library/#Composites.rotQ!-Tuple{AbstractArray{#s15,2} where #s15<:Real,Real}",
     "page": "Library",
     "title": "Composites.rotQ!",
     "category": "method",
