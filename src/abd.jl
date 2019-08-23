@@ -8,10 +8,15 @@ given the thickness of plies in each lamina and the number of plies in each
 lamina.
 """
 function getz(tply::AbstractArray{<:Real,1}, nply::AbstractArray{<:Integer,1})
-    tlam = tply.*nply
-    return pushfirst!(cumsum(tlam), zero(eltype(tlam))).-sum(tlam)/2.0
+    ttotal = 0.0
+    tlam = zeros(eltype(tply), length(tply)+1)
+    for i = 1:length(tply)
+        ttotal += tply[i]*nply[i]
+        tlam[i+1] = ttotal
+    end
+    tlam .-= ttotal/2.0
+    return tlam
 end
-
 getz(lam::Laminate) = getz(lam.tply, lam.nply)
 
 """
@@ -31,9 +36,7 @@ function getQ(e1::Real, e2::Real, g12::Real, nu12::Real, theta::Real=0.0)
     q66 = g12
     return rotQ(q11, q12, q22, q66, theta)
 end
-
 getQ(mat::Material, theta::Real=0.0) = getQ(mat.e1, mat.e2, mat.g12, mat.nu12, theta)
-
 getQ(mat::Array{Material,1}, lam::Laminate) = getQ.(mat, lam.theta)
 
 """

@@ -36,29 +36,50 @@ Hashin-Rotem
 4. Matrix failure in compression
 """
 function getmatfail(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
-    xc::Real, yt::Real, yc::Real, s::Real, method::String)
+    xc::Real, yt::Real, yc::Real, s::Real, method::AbstractString)
 
     if method == "maxstress"
-        fail = [sigma1/xt, -sigma1/xc, sigma2/yt, -sigma2/yc, tau12/s, -tau12/s]
-        safetyfactor = 1.0./fail
+        return maxstress(sigma1, sigma2, tau12, xt, xc, yt, yc, s)
     elseif method == "tsaiwu"
-        a = (sigma1^2.0/(xt*xc))+(sigma2^2.0/(yt*yc))-
-             sqrt(1.0/(xt*xc)*1.0/(yt*yc))*sigma1*sigma2+tau12^2.0/s^2.0
-        b = (1.0/xt-1.0/xc)*sigma1+(1.0/yt-1.0/yc)*sigma2
-        c = -1
-        fail = a+b
-        safetyfactor = abs(fail) > 1e-20 ? (-b+sqrt(b^2-4*a*c))/(2a) : 999999.0
+        return tsaiwu(sigma1, sigma2, tau12, xt, xc, yt, yc, s)
     elseif method == "hashinrotem"
-        tensionfail = (sigma2^2.0/yt^2.0+tau12^2.0/s^2.0)
-        compressionfail = (sigma2^2.0/yc^2.0+tau12^2.0/s^2.0)
-        fail = [sigma1/xt, -sigma1/xc, sign(sigma2)*tensionfail,
-            sign(sigma2)*-compressionfail]
-        safetyfactor = [xt/sigma1, -xc/sigma1, 1/sqrt(tensionfail),
-            sign(sigma2)*-1/sqrt(compressionfail)]
+        return hashinrotem(sigma1, sigma2, tau12, xt, xc, yt, yc, s)
     else
-        error("Chosen method not implemented. Choose between `maxstress`,
+        error("Chosen method ($method) not implemented. Choose between `maxstress`,
             `tsaiwu`, and `hashinrotem`")
     end
+end
+
+function maxstress(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
+    xc::Real, yt::Real, yc::Real, s::Real)
+
+    fail = [sigma1/xt, -sigma1/xc, sigma2/yt, -sigma2/yc, tau12/s, -tau12/s]
+
+    safetyfactor = 1.0./fail
+
+    return fail, safetyfactor
+end
+
+function tsaiwu(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
+    xc::Real, yt::Real, yc::Real, s::Real)
+
+    a = (sigma1^2.0/(xt*xc))+(sigma2^2.0/(yt*yc))-
+         sqrt(1.0/(xt*xc)*1.0/(yt*yc))*sigma1*sigma2+tau12^2.0/s^2.0
+    b = (1.0/xt-1.0/xc)*sigma1+(1.0/yt-1.0/yc)*sigma2
+    c = -1
+    fail = a+b
+    safetyfactor = abs(fail) > 1e-20 ? (-b+sqrt(b^2-4*a*c))/(2a) : Inf
+
+    return fail, safetyfactor
+end
+
+function hashinrotem(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
+    xc::Real, yt::Real, yc::Real, s::Real)
+
+    tensionfail = (sigma2^2.0/yt^2.0+tau12^2.0/s^2.0)
+    compressionfail = (sigma2^2.0/yc^2.0+tau12^2.0/s^2.0)
+    fail = [sigma1/xt, -sigma1/xc, sign(sigma2)*tensionfail, sign(sigma2)*-compressionfail]
+    safetyfactor = [xt/sigma1, -xc/sigma1, 1/sqrt(tensionfail), sign(sigma2)*-1/sqrt(compressionfail)]
 
     return fail, safetyfactor
 end
