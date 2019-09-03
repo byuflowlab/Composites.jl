@@ -50,6 +50,29 @@ function getmatfail(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
     end
 end
 
+getmatfail(stress::AbstractArray{<:Real,1}, mat::Material, method::AbstractString) =
+    getmatfail(stress[1], stress[2], stress[3], mat.xt, mat.xc, mat.yt, mat.yc,
+    mat.s, method)
+getmatfail(stress::AbstractArray{<:Real,1}, xt::Real, xc::Real, yt::Real,
+    yc::Real, s::Real, method::AbstractString) = getmatfail(stress[1], stress[2],
+    stress[3], xt, xc, yt, yc, s, method)
+getmatfail(sigma1::Real, sigma2::Real, tau12::Real, mat::Material, method::AbstractString) =
+    getmatfail(sigma1, sigma2, tau12, mat.xt, mat.xc, mat.yt, mat.yc, mat.s, method)
+
+function getmatfail(stress::AbstractArray{<:AbstractArray{<:Real,1},1},
+    mat::AbstractArray{<:Material,1}, lam::Laminate, method::AbstractString)
+
+    result = [getmatfail(stress[i][1], stress[i][2], stress[i][3],
+        mat[lam.matid[i]].xt, mat[lam.matid[i]].xc,
+        mat[lam.matid[i]].yt, mat[lam.matid[i]].yc,
+        mat[lam.matid[i]].s, method) for i in 1:length(lam.matid)]
+
+    matfail = [result[i][1] for i in 1:length(lam.matid)]
+    sf = [result[i][2] for i in 1:length(lam.matid)]
+
+    return matfail, sf
+end
+
 function maxstress(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
     xc::Real, yt::Real, yc::Real, s::Real)
 
@@ -58,6 +81,26 @@ function maxstress(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
     safetyfactor = 1.0./fail
 
     return fail, safetyfactor
+end
+maxstress(stress::AbstractArray{<:Real,1}, mat::Material) =
+    maxstress(stress[1], stress[2], stress[3], mat.xt, mat.xc, mat.yt, mat.yc, mat.s)
+maxstress(stress::AbstractArray{<:Real,1}, xt::Real, xc::Real, yt::Real,
+    yc::Real, s::Real) = maxstress(stress[1], stress[2], stress[3], xt, xc, yt, yc, s)
+maxstress(sigma1::Real, sigma2::Real, tau12::Real, mat::Material) =
+    maxstress(sigma1, sigma2, tau12, mat.xt, mat.xc, mat.yt, mat.yc, mat.s)
+
+function maxstress(stress::AbstractArray{<:AbstractArray{<:Real,1},1},
+    mat::AbstractArray{<:Material,1}, lam::Laminate)
+
+    result = [maxstress(stress[i][1], stress[i][2], stress[i][3],
+        mat[lam.matid[i]].xt, mat[lam.matid[i]].xc,
+        mat[lam.matid[i]].yt, mat[lam.matid[i]].yc,
+        mat[lam.matid[i]].s, method) for i in 1:length(lam.matid)]
+
+    matfail = [result[i][1] for i in 1:length(lam.matid)]
+    sf = [result[i][2] for i in 1:length(lam.matid)]
+
+    return matfail, sf
 end
 
 function tsaiwu(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
@@ -72,6 +115,26 @@ function tsaiwu(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
 
     return fail, safetyfactor
 end
+tsaiwu(stress::AbstractArray{<:Real,1}, mat::Material) =
+    tsaiwu(stress[1], stress[2], stress[3], mat.xt, mat.xc, mat.yt, mat.yc, mat.s)
+tsaiwu(stress::AbstractArray{<:Real,1}, xt::Real, xc::Real, yt::Real,
+    yc::Real, s::Real) = tsaiwu(stress[1], stress[2], stress[3], xt, xc, yt, yc, s)
+tsaiwu(sigma1::Real, sigma2::Real, tau12::Real, mat::Material) =
+    tsaiwu(sigma1, sigma2, tau12, mat.xt, mat.xc, mat.yt, mat.yc, mat.s)
+
+function tsaiwu(stress::AbstractArray{<:AbstractArray{<:Real,1},1},
+    mat::AbstractArray{<:Material,1}, lam::Laminate)
+
+    result = [tsaiwu(stress[i][1], stress[i][2], stress[i][3],
+        mat[lam.matid[i]].xt, mat[lam.matid[i]].xc,
+        mat[lam.matid[i]].yt, mat[lam.matid[i]].yc,
+        mat[lam.matid[i]].s, method) for i in 1:length(lam.matid)]
+
+    matfail = [result[i][1] for i in 1:length(lam.matid)]
+    sf = [result[i][2] for i in 1:length(lam.matid)]
+
+    return matfail, sf
+end
 
 function hashinrotem(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
     xc::Real, yt::Real, yc::Real, s::Real)
@@ -83,22 +146,17 @@ function hashinrotem(sigma1::Real, sigma2::Real, tau12::Real, xt::Real,
 
     return fail, safetyfactor
 end
+hashinrotem(stress::AbstractArray{<:Real,1}, mat::Material) =
+    hashinrotem(stress[1], stress[2], stress[3], mat.xt, mat.xc, mat.yt, mat.yc, mat.s)
+hashinrotem(stress::AbstractArray{<:Real,1}, xt::Real, xc::Real, yt::Real,
+    yc::Real, s::Real) = hashinrotem(stress[1], stress[2], stress[3], xt, xc, yt, yc, s)
+hashinrotem(sigma1::Real, sigma2::Real, tau12::Real, mat::Material) =
+    hashinrotem(sigma1, sigma2, tau12, mat.xt, mat.xc, mat.yt, mat.yc, mat.s)
 
-getmatfail(stress::AbstractArray{<:Real,1}, mat::Material, method::String) =
-    getmatfail(stress[1], stress[2], stress[3], mat.xt, mat.xc, mat.yt, mat.yc,
-    mat.s, method)
+function hashinrotem(stress::AbstractArray{<:AbstractArray{<:Real,1},1},
+    mat::AbstractArray{<:Material,1}, lam::Laminate)
 
-getmatfail(stress::AbstractArray{<:Real,1}, xt::Real, xc::Real, yt::Real,
-    yc::Real, s::Real, method::String) = getmatfail(stress[1], stress[2],
-    stress[3], xt, xc, yt, yc, s, method)
-
-getmatfail(sigma1::Real, sigma2::Real, tau12::Real, mat::Material, method::String) =
-    getmatfail(sigma1, sigma2, tau12, mat.xt, mat.xc, mat.yt, mat.yc, mat.s, method)
-
-function getmatfail(stress::AbstractArray{<:AbstractArray{<:Real,1},1},
-    mat::AbstractArray{<:Material,1}, lam::Laminate, method::String)
-
-    result = [getmatfail(stress[i][1], stress[i][2], stress[i][3],
+    result = [hashinrotem(stress[i][1], stress[i][2], stress[i][3],
         mat[lam.matid[i]].xt, mat[lam.matid[i]].xc,
         mat[lam.matid[i]].yt, mat[lam.matid[i]].yc,
         mat[lam.matid[i]].s, method) for i in 1:length(lam.matid)]
