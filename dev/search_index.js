@@ -49,6 +49,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "library/#Composites.cylinder_bending_local_buckling-NTuple{4,Any}",
+    "page": "Library",
+    "title": "Composites.cylinder_bending_local_buckling",
+    "category": "method",
+    "text": "cylinder_bending_local_buckling(A::Array{<:Real,2}, D::Array{<:Real,2}, R::Real, h::Real)\n\nCalculates local buckling load. R is the cylinder radius. h is the total laminate thickness.\n\nFollows approach suggested in SP-8001, which uses the theoretical axial compression cylinder buckling equation with a correction factor specific for bending cases, except assumes an infinitely long cylinder and that wave numbers are real-valued rather than integers (in order to elimate them as variables)\n\nsee An Approximate Solution and Master Curves for Buckling of Symmetrically Laminated Composite Cylinders by Michael P. Nemeth for details on the equation for the buckling of an infinitely long orthotropic cylinder\n\n\n\n\n\n"
+},
+
+{
+    "location": "library/#Composites.cylinder_uniaxial_local_buckling",
+    "page": "Library",
+    "title": "Composites.cylinder_uniaxial_local_buckling",
+    "category": "function",
+    "text": "cylinder_uniaxial_local_buckling(A::Array{<:Real,2}, D::Array{<:Real,2}, R::Real, h::Real, correlation::Bool=true)\n\nCalculates local buckling load. R is the cylinder radius. h is the total laminate thickness.\n\nassumes: infinitely long cylinder, simply supported, uniaxial compression, wave numbers are real-valued rather than integers (this allows them to be eliminated as variables)\n\nsee An Approximate Solution and Master Curves for Buckling of Symmetrically Laminated Composite Cylinders by Michael P. Nemeth\n\nalso see Simple Formulas and Results for Buckling Resistance and Stiffness Design of Compression-Loaded Laminated-Composite Cylinders by Michael P. Nemeth\n\nThe correlation factor from SP-8001 is also applied, but can be disabled by setting correlation=false.\n\n\n\n\n\n"
+},
+
+{
     "location": "library/#Composites.getABD!-Tuple{AbstractArray{#s24,2} where #s24<:Real,AbstractArray{#s25,2} where #s25<:Real,AbstractArray{#s26,2} where #s26<:Real,AbstractArray{#s27,1} where #s27<:Integer,AbstractArray{#s28,1} where #s28<:Integer,AbstractArray{#s29,1} where #s29<:Real,AbstractArray{#s30,1} where #s30<:Real,AbstractArray{#s31,1} where #s31<:(AbstractArray{#s32,2} where #s32<:Real)}",
     "page": "Library",
     "title": "Composites.getABD!",
@@ -97,11 +113,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "library/#Composites.localbuckling-Tuple{AbstractArray{#s30,2} where #s30<:Real,AbstractArray{#s29,2} where #s29<:Real,Real}",
+    "location": "library/#Composites.plate_shear_local_buckling-Tuple{AbstractArray{#s30,2} where #s30<:Real,AbstractArray{#s29,2} where #s29<:Real,Real}",
     "page": "Library",
-    "title": "Composites.localbuckling",
+    "title": "Composites.plate_shear_local_buckling",
     "category": "method",
-    "text": "localbuckling(A::Array{<:Real,2}, D::Array{<:Real,2}, b::Real)\n\nCalculates local buckling load and strains. b is the panel width.\n\nassumes: balanced, symmetric, large aspect ratio, simply supported, uniaxial compression, flat rectangular plate. buckling strain is output as a positive value\n\nsee chapter on Structural Component Design Techniques from Alastair Johnson section 6.2: Design of composite panels\n\n\n\n\n\n"
+    "text": "plate_shear_local_buckling(A::Array{<:Real,2}, D::Array{<:Real,2}, b::Real)\n\nCalculates local buckling load and strains. b is the panel width.\n\nassumes: balanced, symmetric, large aspect ratio, simply supported, uniaxial compression, flat rectangular plate\n\nsee chapter on Structural Component Design Techniques from Alastair Johnson section 6.2: Design of composite panels\n\nprobably assumes wave numbers are continuous in order to eliminate them\n\n\n\n\n\n"
+},
+
+{
+    "location": "library/#Composites.plate_uniaxial_local_buckling-Tuple{AbstractArray{#s30,2} where #s30<:Real,AbstractArray{#s29,2} where #s29<:Real,Real}",
+    "page": "Library",
+    "title": "Composites.plate_uniaxial_local_buckling",
+    "category": "method",
+    "text": "plate_uniaxial_local_buckling(A::Array{<:Real,2}, D::Array{<:Real,2}, b::Real)\n\nCalculates local buckling load and strains. b is the panel width.\n\nassumes: balanced, symmetric, large aspect ratio, simply supported, uniaxial compression, flat rectangular plate. buckling strain is output as a positive value\n\nsee chapter on Structural Component Design Techniques from Alastair Johnson section 6.2: Design of composite panels\n\nprobably assumes wave numbers are continuous in order to eliminate them\n\n\n\n\n\n"
 },
 
 {
