@@ -1,6 +1,6 @@
 """
-    `material{R<:Real}(e1,e2,g12,nu12,rho,xt,xc,yt,yc,s,t)`
-Returns struct containing composite (in-plane) material properties.
+    `Material{R<:Real}(e1,e2,g12,nu12,rho,xt,xc,yt,yc,s,t)`
+Returns composite type containing composite (in-plane) material properties.
 # Arguments/Fields
 - `e1`: E1
 - `e2`: E2
@@ -14,32 +14,40 @@ Returns struct containing composite (in-plane) material properties.
 - `s`: shear ultimate strength
 - `t`: ply thickness
 """
-struct material{R<:Real}
-    e1::R #E1
-    e2::R #E2
-    g12::R #G12
-    nu12::R #nu12
-    rho::R #density
-    xt::R #longitudinal tensile ultimate strength (Pa)
-    xc::R #longitudinal compressive ultimate strength (Pa)
-    yt::R #transverse tensile ultimate strength (Pa)
-    yc::R #transverse compressive ultimate strength (Pa)
-    s::R #shear ultimate strength (Pa)
-    t::R # ply thickness
+struct Material{R<:Real}
+    e1::R
+    e2::R
+    g12::R
+    nu12::R
+    rho::R
+    xt::R
+    xc::R
+    yt::R
+    yc::R
+    s::R
+    t::R
 end
 
+Base.convert(::Type{Material{R}}, mat::Material) where R<:Real = Material{R}(mat)
+(::Type{Material{R}})(mat::Material) where R<:Real = Material{R}(
+    [getfield(mat,field) for field in fieldnames(Material)]...)
+
 """
-    `laminate{I<:Integer,R<:Real}(matid, nply, tply, theta)`
-Returns struct containing laminate properties
+    `Laminate{R<:Real}(matid, nply, tply, theta)`
+Returns struct containing Laminate properties
 # Arguments/Fields
-- `matid::Array{I,1}`: material id for each lamina
-- `nply::Array{I,1}`: number of plies in each lamina
-- `tply::Array{R,1}`: ply thickness for each lamina
-- `theta::Array{I,1}`: orientation of each lamina (degrees)
+- `matid::Array{Int, 1}`: Material id for each lamina
+- `nply::Array{Int, 1}`: number of plies in each lamina
+- `tply::Array{R, 1}`: ply thickness for each lamina
+- `theta::Array{Int, 1}`: orientation of each lamina (degrees)
 """
-struct laminate{I<:Integer,R<:Real}
-    matid::Array{I,1}
-    nply::Array{I,1}
+struct Laminate{R<:Real}
+    matid::Array{Int,1}
+    nply::Array{Int,1}
     tply::Array{R,1}
     theta::Array{R,1}
 end
+
+Base.convert(::Type{Laminate{R}}, lam::Laminate) where R<:Real = Laminate{R}(lam)
+(::Type{Laminate{R}})(lam::Laminate) where R<:Real = Laminate{R}(
+    [getfield(lam,field) for field in fieldnames(Laminate)]...)

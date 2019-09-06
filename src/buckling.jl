@@ -3,7 +3,8 @@
 Calculates local buckling load and strains. `b` is the panel width.
 
 assumes: balanced, symmetric, large aspect ratio, simply supported,
-uniaxial compression, flat rectangular plate
+uniaxial compression, flat rectangular plate. buckling strain is output as a
+positive value
 
 see chapter on Structural Component Design Techniques from Alastair Johnson
 section 6.2: Design of composite panels
