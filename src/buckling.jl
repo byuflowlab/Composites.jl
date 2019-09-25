@@ -18,6 +18,12 @@ function plate_uniaxial_local_buckling(A::AbstractArray{<:Real,2}, D::AbstractAr
     return bucklingload
 end #buckling
 
+# Lekhnitskii (see LOCAL BUCKLING OF COMPOSITE BEAMS G. Tarján, A. Sapkás and L.P. Kollár)
+function plate_bending_local_buckling(D::AbstractArray{<:Real,2}, b::Real)
+    bucklingload = (pi/b)^2.0*(13.4*sqrt(D[1,1]*D[2,2])+10.4*(D[1,2]+2*D[3,3]))
+    return bucklingload
+end #buckling
+
 """
     plate_shear_local_buckling(A::Array{<:Real,2}, D::Array{<:Real,2}, b::Real)
 Calculates local buckling load and strains. `b` is the panel width.
@@ -38,13 +44,13 @@ function plate_shear_local_buckling(A::AbstractArray{<:Real,2}, D::AbstractArray
     c = (D1*D2)^(1/2)/D3
     #TODO: replace if statement here with smooth version
     if c >= 1.0
-        return c^(1/2)*(0.62+0.38/c)
+        fc = c^(1/2)*(0.62+0.38/c)
     else
-        return 0.89 + 0.04*c + 0.07*c^2
+        fc = 0.89 + 0.04*c + 0.07*c^2
     end
     K2 = (D2*D3)^(1/2)*fc/D1
     bucklingload = 52*K2*D1/b^2
-    # bucklingstrain = -bucklingload/A[6,6]
+    # bucklingstrain = -bucklingload/A[3,3]
     return bucklingload
 end #buckling
 
