@@ -42,12 +42,21 @@ function plate_shear_local_buckling(A::AbstractArray{<:Real,2}, D::AbstractArray
     D2 = D[2,2]
     D3 = D[1,2] + 2*D[3,3]
     c = (D1*D2)^(1/2)/D3
-    #TODO: replace if statement here with smooth version
-    if c >= 1.0
-        fc = c^(1/2)*(0.62+0.38/c)
-    else
+
+    # # non-smooth version
+    # if c >= 1.0
+    #     fc = c^(1/2)*(0.62+0.38/c)
+    # else
+    #     fc = 0.89 + 0.04*c + 0.07*c^2
+    # end
+
+    # smooth version
+    if (1 + tanh(20*(c-1))) == 0.0
         fc = 0.89 + 0.04*c + 0.07*c^2
+    else
+        f(c) = (0.89 + 0.04*c + 0.07*c^2) + (1 + tanh(20*(c-1)))/2*(c^(1/2)*(0.62+0.38/c)-(0.89 + 0.04*c + 0.07*c^2))
     end
+
     K2 = (D2*D3)^(1/2)*fc/D1
     bucklingload = 52*K2*D1/b^2
     # bucklingstrain = -bucklingload/A[3,3]
