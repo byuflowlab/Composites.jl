@@ -54,7 +54,7 @@ function plate_shear_local_buckling(A::AbstractArray{<:Real,2}, D::AbstractArray
     if (1 + tanh(20*(c-1))) == 0.0
         fc = 0.89 + 0.04*c + 0.07*c^2
     else
-        f(c) = (0.89 + 0.04*c + 0.07*c^2) + (1 + tanh(20*(c-1)))/2*(c^(1/2)*(0.62+0.38/c)-(0.89 + 0.04*c + 0.07*c^2))
+        fc = (0.89 + 0.04*c + 0.07*c^2) + (1 + tanh(20*(c-1)))/2*(c^(1/2)*(0.62+0.38/c)-(0.89 + 0.04*c + 0.07*c^2))
     end
 
     K2 = (D2*D3)^(1/2)*fc/D1
